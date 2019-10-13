@@ -109,7 +109,7 @@
                 dataType: 'json',
                 data: '',
                 success: function (backData) {
-                    console.log(backData);
+                    // console.log(backData);
                     if (backData.code == 200) {
                         $('#selCategory').html(template('cat_list', backData));
 
@@ -163,7 +163,7 @@
                     last: '尾页',
                     onPageClick: function (event, page) {
                         $('#page-content').text('Page ' + page);
-                        console.log(page);
+                        // console.log(page);
                         // if(startPage != page){
                                 getArticleList(page);
 
@@ -182,7 +182,7 @@
                     dataType:'json',
                     data:{id:id},
                     success: function(backData){
-                        console.log(backData);
+                        // console.log(backData);
                         if(backData.code == 204){
                             window.location.reload();
 
@@ -190,6 +190,13 @@
                     }
                 });
             });
+
+
+            $('#release_btn').click(function(){
+                $('.level02>li:eq(1)',window.parent.document).trigger('click');
+            });
+
+
 
         });
     </script>
