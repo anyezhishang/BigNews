@@ -105,10 +105,10 @@
                 data: '',
                 success: function (backData) {
                     console.log(backData);
-                    if (backData.code == 200) {
+                    // if (backData.code == 200) {
                         $('.table>tbody').html(template('cat_list', backData));
 
-                    }
+                    // }
                 }
             });
 
@@ -139,7 +139,7 @@
                             console.log(backData);
                             if (backData.code == 201) {
                                 console.log('新增成功');
-                                location.reload();
+                                window.location.reload();
                             }
                         }
                     });
@@ -160,7 +160,7 @@
                         success: function (backData) {
                             console.log(backData);
                             if (backData.code == 200) {
-                                location.reload();
+                                window.location.reload();
 
                             }
 
@@ -169,11 +169,12 @@
                 }
             });
 
-
+            //模态框取消按钮
             $('.btn-cancel').click(function () {
                 $('.modal-body>form')[0].reset();
             });
 
+            /* 4.删除文章类别 */
             $('.table>tbody').on('click','.btn-del',function () {
                 console.log(111);
                 $.ajax({
@@ -185,7 +186,7 @@
                         console.log(backData);
                         if(backData.code == 204){
                             alert('删除成功');
-                            location.reload();
+                            window.location.reload();
                         }
                     }
                 });

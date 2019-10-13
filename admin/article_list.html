@@ -10,7 +10,10 @@
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/iconfont.css">
     <link rel="stylesheet" href="./css/main.css">
+
     <script src="./libs/jquery-1.12.4.min.js"></script>
+    <script src="./libs/bootstrap/js/bootstrap.min.js"></script>
+    <script src="./libs/jquery.twbsPagination.js"></script>
     <!-- 引入模板引擎js文件 -->
     <script src="./libs/template-web.js"></script>
 </head>
@@ -69,14 +72,16 @@
                 </tbody>
             </table>
             <div class="row text-center">
+                <ul id="pagination" class="pagination-sm"></ul>
             </div>
         </div>
     </div>
 
+
     <script id="cat_list" type="text/html">
         <option value="">所有分类</option>
         {{ each data v }}
-        <option value="">{{ v.name }}</option>
+        <option value="{{ v.id }}">{{ v.name }}</option>
         {{ /each }}
     </script>
 
@@ -89,7 +94,7 @@
             <td class="text-center">{{ v.date }}</td>
             <td class="text-center">{{ v.state }}</td>
             <td class="text-center">
-                <a href="article_edit.html" class="btn btn-default btn-xs">编辑</a>
+                <a href="article_edit.html" class="btn btn-info btn-xs">编辑</a>
                 <a href="javascript:void(0);" data-id="{{ v.id }}" class="btn btn-danger btn-xs delete">删除</a>
             </td>
         </tr>
@@ -97,7 +102,7 @@
     </script>
     <script src="./libs/http.js"></script>
     <script>
-        $(function(){
+        $(function () {
             $.ajax({
                 url: BigNew.category_list,
                 type: 'get',
@@ -113,19 +118,61 @@
             });
 
 
-            $.ajax({
-                url:BigNew.article_query,
-                type:'get',
-                dataType:'json',
-                data:{
-                    page:1,
-                    perpage:10
-                },
-                success: function(backData){
-                    console.log(backData);
-                    $('.table>tbody').html(template('art_list',backData));
-                }
+
+            $('#btnSearch').click(function (e) {
+                e.preventDefault();
+
+                getArticleList(1,true);
             });
+
+
+            $('#btnSearch').trigger('click');
+
+
+            function getArticleList(currentPage,flag) {
+                $.ajax({
+                    url: BigNew.article_query,
+                    type: 'get',
+                    dataType: 'json',
+                    data: {
+                        page: currentPage,
+                        perpage: 10, //每页显示条数，为空默认每页6条
+                        type: $('#selCategory').val(),
+                        state: $('#selStatus').val()
+                    },
+                    success: function (backData) {
+                        $('.table>tbody').html(template('art_list', backData));
+
+                        if(flag){
+                            loadPagination(backData.data.totalPage,currentPage);
+
+                        }
+                    }
+                });
+            }
+
+            function loadPagination(totalPage,startPage,flag) {
+                $('#pagination').twbsPagination('destroy');
+                $('#pagination').twbsPagination({
+                    startPage: startPage,
+                    totalPages: totalPage,
+                    visiblePages: 10,
+                    first: '首页',
+                    prev: '上一页',
+                    next: '下一页',
+                    last: '尾页',
+                    onPageClick: function (event, page) {
+                        $('#page-content').text('Page ' + page);
+                        console.log(page);
+                        // if(startPage != page){
+                                getArticleList(page);
+
+                        // }
+                    }
+                });
+            }
+
+
         });
     </script>
 
