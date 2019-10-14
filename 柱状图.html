@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- 引入 ECharts 文件 -->
+    <script src="echarts.min.js"></script>
+</head>
+
+<body>
+
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 600px;height:400px;"></div>
+
+
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        var data = [];
+        var date = [];
+        var obj = {};
+
+
+        //(1).实例化ajax对象
+        var xhr = new XMLHttpRequest();
+        //(2).设置请求方法和地址
+        //get请求的数据直接添加在url的后面 格式是 url?key=value
+        xhr.open('get', 'http://localhost:8080/api/v1/admin/data/visit');
+
+        xhr.setRequestHeader('Authorization', 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiYWRtaW4iLCJleHAiOjIxNzU0OTQxODYsImlhdCI6MTU3MDY5NDE4Nn0.vaTA0bLilaTPWtZTQnm7LZ_kG7EG10iZ9RUwFUNMW0kL1M9qpfcSDHFGlQ2TYQHMimM8tqV0wgRhFO6JwTVPfbXEVZovTurO3cIVvhuaySrOdNluNsQ_KEW8iroxvliPd3MHMK9XFSnGobhaFN_8Z-4UfrRdHjsQnB0iWUGGFuM');
+        //(3).发送请求
+        xhr.send();
+        //(4).注册回调函数
+        xhr.onload = function () {
+            // console.log(xhr.responseText);
+            obj = JSON.parse(xhr.responseText);
+            console.log(obj);
+
+            // for (var i = 0; i < obj.date.length; i++) {
+            //     data.push(obj.date[i].name);
+            //     obj.date[i].value = obj.date[i].articles;
+            //     // date.push(obj.date[i].date);
+            // }
+
+            loadEcharts();
+
+        };
+
+        function loadEcharts() {
+            // 指定图表的配置项和数据
+            var option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                        type: 'line'        // 默认为直线，可选为：'line' | 'shadow'
+                    }
+                },
+                title: {
+                    left: 'center',
+                    text: '分类访问量',
+                },
+                legend: {
+                    left: 'center',
+                    top: '30px',
+                    data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ['一月', '二月', '三月', '四月', '五月']
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value'
+                    }
+                ],
+                series: [
+                    {
+                        name: '直接访问',
+                        type: 'bar',
+                        data: [320, 332, 301, 334, 390]
+                    },
+                    {
+                        name: '邮件营销',
+                        type: 'bar',
+                        // stack: '广告',
+                        data: [120, 132, 101, 134, 90]
+                    },
+                    {
+                        name: '联盟广告',
+                        type: 'bar',
+                        // stack: '广告',
+                        data: [220, 182, 191, 234, 290]
+                    },
+                    {
+                        name: '视频广告',
+                        type: 'bar',
+                        // stack: '广告',
+                        data: [150, 232, 201, 154, 190]
+                    },
+                    {
+                        name: '搜索引擎',
+                        type: 'bar',
+                        data: [862, 1018, 964, 1026, 1679],
+                    },
+                ]
+            };
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        }
+    </script>
+</body>
+
+</html>
