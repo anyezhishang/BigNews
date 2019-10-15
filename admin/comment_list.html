@@ -173,7 +173,7 @@
       <td>{{ v.date }} {{ v.time }}</td>
       <td>{{ v.state }}</td>
       <td class="text-center">
-        {{ if v.state == '已拒绝' }}
+        {{ if v.state == '待审核' }}
         <a href="javascript:void(0);;" data-id="{{ v.id }}" class="btn btn-primary btn-xs btn-pass">批准</a>
         {{ else if v.state == '已通过' }}
         <a href="javascript:void(0);;" data-id="{{ v.id }}" class="btn btn-warning btn-xs btn-reject">拒绝</a>

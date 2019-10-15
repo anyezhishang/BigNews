@@ -227,6 +227,23 @@
     </div>
     <!-- 导包template -->
     <script src="./js/template-web.js"></script>
+
+
+    <script>
+        $(function(){
+            $('.search_btn').click(function(){
+                $.ajax({
+                    url:'/index/search',
+                    type:'get',
+                    dataType:'json',
+                    data:'',
+                    success: function(backData){
+                
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
