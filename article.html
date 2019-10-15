@@ -314,7 +314,7 @@
             // 发表评论
             $('.comment_sub').click(function (e) {
                 e.preventDefault();
-                if($('.comment_name').val().trim().length == 0 || $('.comment_input').val().trim().length == 0){
+                if ($('.comment_name').val().trim().length == 0 || $('.comment_input').val().trim().length == 0) {
                     alert('请输入用户名和密码');
                     return;
                 }
@@ -330,7 +330,7 @@
                     },
                     success: function (backData) {
                         console.log(backData);
-                        if(backData.code == 201){
+                        if (backData.code == 201) {
                             alert('发表成功, 等待管理员审核');
                             $('.comment_name').val('');
                             $('.comment_input').val('');
@@ -372,6 +372,16 @@
                     // console.log(backData);
                     $('.guanzhu_list').html(template('att_list', backData));
                 }
+            });
+
+
+            $('.search_btn').click(function () {
+                var search_txt = $('.search_txt').val();
+                search_txt = escape(search_txt);
+                // 使用 decodeURIComponent 的时候报错 Uncaught URIError: URI malformed
+                // 将%替换为%25浏览器就不会报错
+                search_txt = search_txt.replace(/%/g, '%25');
+                window.location.href = './list.html?search_txt=' + search_txt;
             });
 
 
